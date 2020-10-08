@@ -4,235 +4,184 @@ import { LitElement, css, html } from 'lit-element';
 export class AdminVacaciones extends LitElement {
   static get styles() {
     return css`
-            table {
-                border-collapse: collapse;
-                border-spacing: 0;
-                width: 90%;
-                border: 1px solid #ddd;
-                margin-left: 5%;
-                margin-right: 5%;
-            }
-            td {
-                text-align: left;
-                padding: 8px;
-                border: 1px solid black;
-            }
-            tr:nth-child(even){background-color: #f2f2f2}
-            .menu-list {
-                width:90%;
-                margin:auto
-            }
-            `;
+      table {
+        border: 1px solid #e4e4e4;
+        padding: 10px;
+      }
+
+      tr {
+        text-align: left;
+      }
+
+      td {
+        min-width: 200px;
+      }
+
+      .order {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+
+      .stepper {
+        margin: 10px 0;
+      }
+
+      .stepper .step:hover {
+        background-color: #f1f1f1;
+      }
+
+      .step {
+        display: inline-block;
+        padding: 5px;
+        border: 1px solid #d8d7d7;
+        width: 20px;
+        height: auto;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .step.active {
+        background-color: #535353 !important;
+        color: white;
+      }
+
+      .step.left {
+        transform: rotate(180deg);
+      }
+
+      .stepper, .step {
+        user-select: none;
+      }
+    `;
   }
 
   static get properties() {
     return {
-      table: { type: Array },
-      aproved: { type: String },
-      asc: { type: Boolean },
-      pendiente: { type: String },
-      aprobado: { type: String },
-      nAprobado: { type: String }
+      list: { type: Array },
+      nElements: { type: Number },
+      stepper: { type: Array, attribute: false },
+      index: { type: Number, attribute: false },
+      from: { type: Number, attribute: false },
+      to: { type: Number, attribute: false }
     };
   }
 
   constructor() {
     super();
-    this.table = [];
-    this.aproved = 'Pendiente  de aprobación';
-    this.pendiente = ' Pendiente de aprobación';
-    this.asc = true;
-  };
-
-  /**
-         * Añade un nuevo elemento al array.
-         */
-  add() {
-    const input1 = new Date();
-    const input2 = this.shadowRoot.querySelector('#start');
-    const input3 = this.shadowRoot.querySelector('#end');
-    const input4 = this.shadowRoot.querySelector('#nombre');
-    const item = {
-      request: input1.getDate() + '/' + (input1.getMonth() + 1) + '/' + input1.getFullYear(),
-      start: input2.value,
-      finish: input3.value,
-      nombre: input4.value,
-      estado: this.pendiente,
-      aproved: this.aproved
-    };
-    this.table = [...[item], ...this.table];
+    this.list = [];
+    this.nElements = 0;
+    this.stepper = [];
+    this.from = 0;
+    this.to = this.nElements;
+    this.index = 0;
   }
 
-  /**
-         * Ordena por fecha de inicio
-         */
-  sortStart() {
-    if (this.asc == true) {
-      const fechas = this.table;
-      fechas.sort(function(a, b) {
-        if (a.start > b.start) {
-          return 1;
-        }
-        if (a.start < b.start) {
-          return -1;
-        }
-        return 0;
-      });
-      this.table = [...fechas];
-      this.asc = !this.asc;
-    } else {
-      const fechas = this.table;
-      fechas.sort(function(a, b) {
-        if (a.start < b.start) {
-          return 1;
-        }
-        if (a.start > b.start) {
-          return -1;
-        }
-        return 0;
-      });
-      this.table = [...fechas];
-      this.asc = !this.asc;
+  async firstUpdated() {
+    const nPages = Math.ceil(this.list.length / this.nElements);
+    this.stepper = new Array(nPages).fill({});
+    this.to = this.nElements;
+
+    await this.updateComplete;
+    this.setActiveStep(this.index);
+  }
+
+  setActiveStep(index) {
+    this.shadowRoot.querySelectorAll('.step').forEach(row => {
+      if (row.id === `_${index}`) {
+        row.classList.add('active');
+      } else {
+        row.classList.remove('active');
+      }
+    });
+  }
+
+  showPage(index) {
+    this.index = index;
+    this.from = this.nElements * index;
+    this.to = this.from + this.nElements;
+    this.setActiveStep(index);
+  }
+
+  next() {
+    if (this.index < this.stepper.length - 1) {
+      this.showPage(this.index + 1);
     }
   }
 
-  /**
-         * Ordena por fecha de fin
-         */
-  sortEnd() {
-    if (this.asc == true) {
-      const fechas = this.table;
-      fechas.sort(function(a, b) {
-        if (a.finish > b.finish) {
-          return 1;
-        }
-        if (a.finish < b.finish) {
-          return -1;
-        }
-        return 0;
-      });
-      this.table = [...fechas];
-      this.asc = !this.asc;
-    } else {
-      const fechas = this.table;
-      fechas.sort(function(a, b) {
-        if (a.finish < b.finish) {
-          return 1;
-        }
-        if (a.finish > b.finish) {
-          return -1;
-        }
-        return 0;
-      });
-      this.table = [...fechas];
-      this.asc = !this.asc;
+  prev() {
+    if (this.index > 0) {
+      this.showPage(this.index - 1);
     }
   }
 
-  /**
-         * Ordena por nombre
-         */
-  nameRequest() {
-    if (this.asc == true) {
-      const name = this.table;
-      name.sort(function(a, b) {
-        if (a.nombre > b.nombre) {
-          return 1;
-        }
-        if (a.nombre < b.nombre) {
-          return -1;
-        }
-        return 0;
-      });
-      this.table = [...name];
-      this.asc = !this.asc;
-    } else {
-      const name = this.table;
-      name.sort(function(a, b) {
-        if (a.nombre < b.nombre) {
-          return 1;
-        }
-        if (a.nombre > b.nombre) {
-          return -1;
-        }
-        return 0;
-      });
-      this.table = [...name];
-      this.asc = !this.asc;
+  orderList(column) {
+    const orderedList = this.list.slice(this.from, this.to).sort((a, b) => {
+      if (a[column] < b[column]) return -1;
+      if (a[column] > b[column]) return 1;
+      return 0;
+    });
+
+    if (JSON.stringify(this.list.slice(this.from, this.to)) === JSON.stringify((orderedList))) {
+      orderedList.reverse();
     }
+
+    const newList = [...this.list];
+    let index = this.from;
+
+    orderedList.forEach(orderedItem => {
+      const element = this.list.find(item => item.id === orderedItem.id);
+      newList[index] = element;
+      index++;
+    });
+
+    this.list = [...newList];
   }
 
-  /**
-         * Ordena por fecha de solicitud
-         */
-  sortRequest() {
-    if (this.asc == true) {
-      const fechas = this.table;
-      fechas.sort(function(a, b) {
-        if (a.request > b.request) {
-          return 1;
-        }
-        if (a.request < b.request) {
-          return -1;
-        }
-        return 0;
-      });
-      this.table = [...fechas];
-      this.asc = !this.asc;
-    } else {
-      const fechas = this.table;
-      fechas.sort(function(a, b) {
-        if (a.request < b.request) {
-          return 1;
-        }
-        if (a.request > b.request) {
-          return -1;
-        }
-        return 0;
-      });
-      this.table = [...fechas];
-      this.asc = !this.asc;
-    }
+  renderStepper() {
+    return html`
+      <div class="stepper">
+        <div class="step left" @click="${this.prev}">&#x25B7;</div>
+        ${this.stepper.map((x, i) => html`
+          <div id="${`_${i}`}" class="step" @click="${() => this.showPage(i)}">${i + 1}</div>
+        `)}
+        <div class="step" @click="${this.next}">&#x25B7;</div>
+      </div>
+    `;
   }
 
   render() {
     return html`
-            <div class="menu-list">
-                <h2 title="Solicitud de vacaciones">Solicitud de vacaciones admin</h2>
-                <p> 
-                    Nombre del empleado <input type="text" id="nombre">
-                    Fecha Inicio <input type="date" id="start" min="2020-01-01" max="2021-12-31">
-                    Fecha Fin <input type="date" id="end" min="2020-01-01" max="2021-12-31">
-                    <button @click="${this.add}">Agregar</button>
-                </p>
-            </div>
-            <table>
-                <tr>
-                    <td>Nombre del empleado <button @click="${() => this.nameRequest()}">Ordenar</button></td>
-                    <td> Fecha de Solicitud <button @click="${() => this.sortRequest()}">Ordenar</button></td>
-                    <td> Fecha de Inicio  <button @click="${() => this.sortStart()}">Ordenar</button></td>
-                    <td> Fecha de Fin  <button @click="${() => this.sortEnd()}">Ordenar</button></td>
-                    <td> Estado de la solicitud </td>
-                    <td> Fecha de estado  </td>
-                </tr>
-                ${this.table.map((item, i) => html`
-                <tr>
-                    <td>${item.nombre}</td>
-                    <td>${item.request}</td>
-                    <td>${item.start}</td>
-                    <td>${item.finish}</td>
-                    <td>
-                        <select id="estado">
-                            <option selected>Pendiente de aprobación</option>
-                            <option> Aprobado </option>
-                            <option> No aprobado</option>
-                        </select>
-                    </td>
-                    <td>${item.request}</td>
-                </tr>
-                    `)}
-            </table>
-            `;
+      <div class="container">
+        ${this.renderStepper()}
+        <table>
+        <tr>
+          <th><button class="order" @click="${() => this.orderList('name')}">Nombre del empleado <span>&#9662;</span></button></th>
+          <th><button class="order" @click="${() => this.orderList('request')}">Fecha de solicitud <span>&#9662;</span></button></th>
+          <th><button class="order" @click="${() => this.orderList('start')}">Fecha de inicio <span>&#9662;</span></button></th>
+          <th><button class="order" @click="${() => this.orderList('finish')}">Fecha de fin <span>&#9662;</span></button></th>
+          <th><button class="order">Estado de la solicitud </button></th>
+          <th><button class="order" @click="${() => this.orderList('request')}">Fecha de estado <span>&#9662;</span></button></th>
+        </tr>
+        ${this.list.slice(this.from, this.to).map(item => html`
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.request}</td>
+            <td>${item.start}</td>
+            <td>${item.finish}</td>
+            <td>
+              <select>
+                <option selected>${item.state}</option>
+              </select>
+            </td>
+            <td>${item.stateD}</td>
+          </tr>
+        `)}
+        </table>
+      </div>
+    `;
   }
 }
 customElements.define('admin-vacaciones', AdminVacaciones);

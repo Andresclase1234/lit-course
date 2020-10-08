@@ -45,7 +45,7 @@ class PaginationView extends LitElement {
       <common-header></common-header>
       <section class="container">
         <h1>Pagination</h1>
-        <pagination-component .list="${data}" .nElements="${5}"></pagination-component>
+        <pagination-component .list="${data}" .nElements="${3}"></pagination-component>
       </section>
     `;
   }
