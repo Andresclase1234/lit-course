@@ -7,16 +7,15 @@ export class AdminVacaciones extends LitElement {
       table {
         border: 1px solid #e4e4e4;
         padding: 10px;
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
       }
 
       tr {
         text-align: left;
       }
-
-      td {
-        min-width: 200px;
-      }
-
+      
       .order {
         padding: 0;
         background-color: transparent;
@@ -27,6 +26,9 @@ export class AdminVacaciones extends LitElement {
 
       .stepper {
         margin: 10px 0;
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;        
       }
 
       .stepper .step:hover {

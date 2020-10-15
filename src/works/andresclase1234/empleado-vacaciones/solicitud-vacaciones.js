@@ -16,21 +16,38 @@ export class SolicitudVacaciones extends LitElement {
         td {
             text-align: left;
             padding: 8px;
-            border: 1px solid black;
-        }
+            border: 1px solid #e4e4e4;
+          }
         tr:nth-child(even){background-color: #f2f2f2}
         .menu-list {
             width:90%;
             margin:auto
+        }
+        .add{
+          background-color: white;
+          color: black;
+          border: 2px solid #555555;
+          padding: 3px 32px;
+        }
+        .add:hover {
+          background-color: #555555;
+          color: white;
+        }
+        button  {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        margin-bottom: 10px;
+        cursor: pointer;
         }
         `;
   }
 
   static get properties() {
     return {
-      table: { type: Array },
-      aproved: { type: String },
-      asc: { type: Boolean }
+      table: { type: Array, attribute: false },
+      aproved: { type: String, attribute: false },
+      asc: { type: Boolean, attribute: false }
     };
   }
 
@@ -101,17 +118,17 @@ export class SolicitudVacaciones extends LitElement {
             <p> 
                 Fecha Inicio <input type="date" id="start" min="2020-01-01" max="2021-12-31">
                 Fecha Fin <input type="date" id="end" min="2020-01-01" max="2021-12-31"> 
-                <button @click="${this.add}">Agregar</button>
+                <button class ="add" @click="${this.add}">Agregar</button>
             </p>
         </div>
         <table>
             <tr>
-                <td> Fecha de Solicitud <button @click="${() => this.sort('request')}">Ordenar</button></td>
-                <td> Fecha de Inicio  <button @click="${() => this.sort('start')}">Ordenar</button></td>
-                <td> Fecha de Fin  <button @click="${() => this.sort('finish')}">Ordenar</button></td>
-                <td> Estado de la solicitud </td>
-                <td> Fecha de estado  </td>
-                <td> Eliminar </td>
+                <td><button @click="${() => this.sort('request')}">Fecha de Solicitud <span>&#9662;</span></button></td>
+                <td><button @click="${() => this.sort('start')}">Fecha de Inicio <span>&#9662;</span></button></td>
+                <td><button @click="${() => this.sort('finish')}">Fecha de Fin <span>&#9662;</span></button></td>
+                <td><button> Estado de la solicitud </button> </td>
+                <td><button> Fecha de estado </button>  </td>
+                <td><button> Eliminar </button></td>
             </tr>
             ${this.table.map((item, i) => html`
             <tr>
