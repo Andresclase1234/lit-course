@@ -2,7 +2,6 @@ import { LitElement, html } from 'lit-element';
 import { commonStyles } from '../../utils/custom-styles';
 import '../../components/common-header';
 import '../../components/work-header';
-import './empleado-vacaciones/solicitud-vacaciones';
 import './admin-vacaciones/admin-vacaciones';
 
 const stat = ['Pendiente de aprobación', 'Aprobado', 'No aprobado'];
