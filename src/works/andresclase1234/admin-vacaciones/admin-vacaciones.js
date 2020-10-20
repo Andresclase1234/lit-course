@@ -120,20 +120,26 @@ export class AdminVacaciones extends LitElement {
   }
 
   orderList(column) {
-    const myList = [...this.list];
-
-    const orderedList = myList.sort((a, b) => {
+    const orderedList = this.list.slice(this.from, this.to).sort((a, b) => {
       if (a[column] < b[column]) return -1;
       if (a[column] > b[column]) return 1;
       return 0;
     });
 
-    if (JSON.stringify(this.list) === JSON.stringify((orderedList))) {
+    if (JSON.stringify(this.list.slice(this.from, this.to)) === JSON.stringify((orderedList))) {
       orderedList.reverse();
     }
 
-    this.list = [...orderedList];
-    this.showPage(0);
+    const newList = [...this.list];
+    let index = this.from;
+
+    orderedList.forEach(orderedItem => {
+      const element = this.list.find(item => item.id === orderedItem.id);
+      newList[index] = element;
+      index++;
+    });
+
+    this.list = [...newList];
   }
 
   renderStepper() {
@@ -169,7 +175,7 @@ export class AdminVacaciones extends LitElement {
             <td>${item.finish}</td>
             <td>
               <select>
-                <option selected>${item.state}</option>   
+                <option selected>${item.state}</option>
               </select>
             </td>
             <td>${item.stateD}</td>
