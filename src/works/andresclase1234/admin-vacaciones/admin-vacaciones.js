@@ -175,7 +175,9 @@ export class AdminVacaciones extends LitElement {
             <td>${item.finish}</td>
             <td>
               <select>
-                <option selected>${item.state}</option>
+              <option>${item.arrState[0]}</option>
+              <option>${item.arrState[1]}</option>
+              <option>${item.arrState[2]}</option>
               </select>
             </td>
             <td>${item.stateD}</td>
