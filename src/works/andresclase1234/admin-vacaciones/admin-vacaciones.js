@@ -151,6 +151,7 @@ export class AdminVacaciones extends LitElement {
   render() {
     return html`
       <div class="container">
+      <h2 title="Solicitud de vacaciones">Solicitud de vacaciones</h2>
         ${this.renderStepper()}
         <table>
         <tr>

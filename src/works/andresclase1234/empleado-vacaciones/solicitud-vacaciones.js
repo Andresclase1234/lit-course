@@ -4,24 +4,66 @@ import { LitElement, css, html } from 'lit-element';
 export class SolicitudVacaciones extends LitElement {
   static get styles() {
     return css`
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-            width: 90%;
-            border: 1px solid #ddd;
-            margin-left: 5%;
-            margin-right: 5%;
-        }
-        td {
-            text-align: left;
-            padding: 8px;
-            border: 1px solid black;
-        }
-        tr:nth-child(even){background-color: #f2f2f2}
-        .menu-list {
-            width:90%;
-            margin:auto
-        }
+    table {
+        border: 1px solid #e4e4e4;
+        padding: 10px;
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+
+      tr {
+        text-align: left;
+      }
+      
+      .order {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+
+      .stepper {
+        margin: 10px 0;
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;        
+      }
+
+      .stepper .step:hover {
+        background-color: #f1f1f1;
+      }
+
+      .step {
+        display: inline-block;
+        padding: 5px;
+        border: 1px solid #d8d7d7;
+        width: 20px;
+        height: auto;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .step.active {
+        background-color: #535353 !important;
+        color: white;
+      }
+
+      .step.left {
+        transform: rotate(180deg);
+      }
+
+      .stepper, .step {
+        user-select: none;
+      }
+
+      .form {
+        padding: 10px;
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+      }
         `;
   }
 
@@ -98,11 +140,11 @@ export class SolicitudVacaciones extends LitElement {
     return html`
         <div class="menu-list">
             <h2 title="Solicitud de vacaciones">Solicitud de vacaciones</h2>
-            <p> 
+            <div class="form"> 
                 Fecha Inicio <input type="date" id="start" min="2020-01-01" max="2021-12-31">
                 Fecha Fin <input type="date" id="end" min="2020-01-01" max="2021-12-31"> 
                 <button @click="${this.add}">Agregar</button>
-            </p>
+            </div>
         </div>
         <table>
             <tr>
