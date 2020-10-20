@@ -3,10 +3,12 @@ import { commonStyles } from '../../utils/custom-styles';
 import { data } from './utils/data';
 import '../../components/common-header';
 import '../../components/work-header';
+import './empleado-vacaciones/solicitud-vacaciones';
 import './admin-vacaciones/admin-vacaciones';
 
 const components = {
-  adminVacaciones: () => html`<admin-vacaciones .list="${data}" .nElements="${2}"></admin-vacaciones>`
+  empleadoVacaciones: () => html`<solicitud-vacaciones></solicitud-vacaciones>`,
+  adminVacaciones: () => html`<admin-vacaciones .list="${data}" .nElements="${3}"></admin-vacaciones>`
 };
 
 class Andresclase1234Page extends LitElement {

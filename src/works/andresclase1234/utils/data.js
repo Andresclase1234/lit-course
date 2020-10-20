@@ -9,5 +9,8 @@ export const data = [
   { id: 1, name: 'Andrés Blanco', request: '16/09/20', start: '15/10/20', finish: '20/10/20', state: stat[0], stateD: '16/09/20', arrState: stat },
   { id: 2, name: 'Mario Lopez', request: '17/09/20', start: '21/10/20', finish: '25/10/20', state: stat[1], stateD: '17/09/20', arrState: stat },
   { id: 3, name: 'Karina Bueno', request: '18/09/20', start: '22/10/20', finish: '30/10/20', state: stat[1], stateD: '18/09/20', arrState: stat },
-  { id: 3, name: 'Eva Fernandez', request: '19/09/20', start: '23/10/20', finish: '01/11/20', state: stat[1], stateD: '19/09/20', arrState: stat }
+  { id: 4, name: 'Eva Fernandez', request: '19/09/20', start: '23/10/20', finish: '01/11/20', state: stat[1], stateD: '19/09/20', arrState: stat },
+  { id: 5, name: 'Pedro Gómez', request: '20/09/20', start: '24/10/20', finish: '02/11/20', state: stat[0], stateD: '20/09/20', arrState: stat },
+  { id: 6, name: 'Manual Ferrero', request: '21/09/20', start: '25/10/20', finish: '02/11/20', state: stat[2], stateD: '21/09/20', arrState: stat },
+  { id: 7, name: 'Mercedes Rodriguez', request: '22/09/20', start: '26/10/20', finish: '03/11/20', state: stat[0], stateD: '22/09/20', arrState: stat }
 ];
